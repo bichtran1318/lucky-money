@@ -1,0 +1,307 @@
+.tarot-card-container {
+  perspective: 1000px;
+  position: relative;
+}
+
+.tarot-card {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  cursor: pointer;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
+}
+
+.tarot-card:not(.disabled):not(.chosen):not(.revealed-chosen):hover {
+  transform: translateY(-10px) scale(1.05);
+  filter: brightness(1.1);
+}
+
+.tarot-card:not(.disabled):not(.chosen):not(.revealed-chosen):hover .card-back {
+  box-shadow:
+    0 0 25px rgba(255, 215, 0, 0.5),
+    0 0 50px rgba(255, 215, 0, 0.2),
+    0 12px 32px rgba(0, 0, 0, 0.2),
+    inset 0 0 20px rgba(255, 255, 255, 0.15);
+}
+
+.tarot-card.chosen {
+  transform: scale(1.05);
+  filter: brightness(1.2);
+}
+
+.tarot-card.chosen .card-back {
+  box-shadow:
+    0 0 30px rgba(255, 215, 0, 0.7),
+    0 0 60px rgba(255, 215, 0, 0.3);
+  border-color: #ffd700;
+}
+
+.tarot-card.disabled {
+  cursor: default;
+}
+
+.tarot-card.revealed {
+  transform: rotateY(180deg);
+  cursor: default;
+}
+
+.tarot-card.revealed.revealed-chosen {
+  transform: rotateY(180deg) scale(1.12);
+  pointer-events: none;
+}
+
+.tarot-card.revealed.revealed-chosen .card-front {
+  border: 3px solid #ffd700;
+  box-shadow:
+    0 0 25px rgba(255, 215, 0, 0.6),
+    0 0 50px rgba(255, 215, 0, 0.3),
+    0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Card Faces */
+.card-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* Back of Card */
+.card-back {
+  background: linear-gradient(145deg, #e8625a, #f09590, #e8625a);
+  border: 3px solid rgba(255, 215, 0, 0.6);
+  border-radius: 16px;
+  box-shadow:
+    0 0 15px rgba(255, 215, 0, 0.2),
+    0 8px 24px rgba(0, 0, 0, 0.1),
+    inset 0 0 20px rgba(255, 255, 255, 0.15);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.card-back-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+}
+
+.card-pattern {
+  width: 100%;
+  height: 100%;
+  border: 2px solid rgba(255, 215, 0, 0.4);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(255, 215, 0, 0.1) 10px,
+    rgba(255, 215, 0, 0.1) 20px
+  );
+}
+
+.card-pattern-symbol {
+  font-size: 2.5rem;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+  animation: symbolFloat 3s ease-in-out infinite;
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes symbolFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.card-question {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #ffd700;
+  text-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+  animation: pulse 2s ease-in-out infinite;
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+
+.card-tap-hint {
+  font-size: 0.75rem;
+  color: rgba(255, 215, 0, 0.7);
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  position: relative;
+  z-index: 1;
+  animation: hintBlink 2.5s ease-in-out infinite;
+}
+
+@keyframes hintBlink {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* Front of Card */
+.card-front {
+  background: linear-gradient(145deg, #ffe44d, #fff9c4, #ffe44d);
+  border: 3px solid #daa520;
+  border-radius: 16px;
+  transform: rotateY(180deg);
+  box-shadow:
+    0 0 20px rgba(255, 215, 0, 0.4),
+    0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.card-front-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  gap: 6px;
+}
+
+.card-front-symbol {
+  font-size: 2.5rem;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.2));
+}
+
+.card-front-name {
+  font-size: 0.75rem;
+  color: #8b0000;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.card-front-divider {
+  width: 50%;
+  height: 2px;
+  background: linear-gradient(to right, transparent, #b8860b, transparent);
+}
+
+.card-front-value {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #8b0000;
+  text-shadow: 0 1px 2px rgba(255, 215, 0, 0.3);
+}
+
+.card-front-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 13px;
+}
+
+.card-front-image-overlay-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 8px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), transparent);
+  border-radius: 13px 13px 0 0;
+  text-align: center;
+}
+
+.card-front-image-overlay-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 8px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  border-radius: 0 0 13px 13px;
+  text-align: center;
+}
+
+.card-front-overlay-text {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffd700;
+  text-shadow:
+    0 0 10px rgba(255, 215, 0, 0.9),
+    0 1px 3px rgba(0, 0, 0, 0.8);
+  letter-spacing: 1px;
+}
+
+/* Special THANH front */
+.card-front-special {
+  background: linear-gradient(145deg, #ff6b9d, #c44dff, #ff6b9d);
+  border-color: #ffd700;
+  box-shadow:
+    0 0 20px rgba(255, 215, 0, 0.6),
+    0 0 40px rgba(196, 77, 255, 0.5),
+    0 0 60px rgba(255, 107, 157, 0.3),
+    0 0 80px rgba(255, 215, 0, 0.2);
+  animation: specialAura 2s ease-in-out infinite;
+}
+
+@keyframes specialAura {
+  0%, 100% {
+    box-shadow:
+      0 0 20px rgba(255, 215, 0, 0.6),
+      0 0 40px rgba(196, 77, 255, 0.5),
+      0 0 60px rgba(255, 107, 157, 0.3),
+      0 0 80px rgba(255, 215, 0, 0.2);
+  }
+  50% {
+    box-shadow:
+      0 0 30px rgba(255, 215, 0, 0.8),
+      0 0 60px rgba(196, 77, 255, 0.7),
+      0 0 90px rgba(255, 107, 157, 0.5),
+      0 0 120px rgba(255, 215, 0, 0.3);
+  }
+}
+
+.card-front-special .card-front-name {
+  color: #fff;
+}
+
+.card-front-special .card-front-divider {
+  background: linear-gradient(to right, transparent, #fff, transparent);
+}
+
+.card-front-value-special {
+  color: #fff !important;
+  font-size: 1.2rem !important;
+  letter-spacing: 3px;
+  text-shadow:
+    0 0 10px rgba(255, 255, 255, 0.8),
+    0 0 20px rgba(196, 77, 255, 0.5) !important;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .card-pattern-symbol {
+    font-size: 2rem;
+  }
+
+  .card-question {
+    font-size: 2rem;
+  }
+
+  .card-front-symbol {
+    font-size: 2rem;
+  }
+
+  .card-front-value {
+    font-size: 0.85rem;
+  }
+}

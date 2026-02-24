@@ -47,15 +47,6 @@ function App() {
     if (hasChosen || alreadyOpened) return
     setHasChosen(true)
     setChosenIndex(index)
-    // Swap chosen card with a 200k card so user always gets 200,000
-    if (cards[index].value !== 200000) {
-      const swapIdx = cards.findIndex((c, i) => i !== index && c.value === 200000)
-      if (swapIdx !== -1) {
-        const temp = { ...cards[index] }
-        cards[index] = { ...cards[swapIdx] }
-        cards[swapIdx] = temp
-      }
-    }
     localStorage.setItem('lixi_opened', 'true')
     localStorage.setItem('lixi_cards', JSON.stringify(cards))
     localStorage.setItem('lixi_chosen', String(index))
@@ -67,20 +58,7 @@ function App() {
       isSpecial: !!cards[index].label,
       browser: navigator.userAgent,
     }
-    fetch('https://ipapi.co/json/')
-      .then(res => res.json())
-      .then(loc => {
-        logData.location = {
-          city: loc.city,
-          region: loc.region,
-          country: loc.country_name,
-          ip: loc.ip,
-        }
-      })
-      .catch(() => {})
-      .finally(() => {
-        addDoc(collection(db, 'lixi_log'), logData).catch(() => {})
-      })
+    addDoc(collection(db, 'lixi_log'), logData).catch(e => console.error('Firestore error:', e))
     // First reveal all other cards
     setTimeout(() => setRevealAll(true), 400)
     // Then show popup for chosen card after others have flipped
